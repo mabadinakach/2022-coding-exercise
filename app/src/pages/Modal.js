@@ -10,7 +10,7 @@ import {
   ListGroupItemHeading,
 } from "reactstrap";
 
-class ModalBuilder extends Component {
+class ProductModal extends Component {
   render() {
     const product = this.props.product;
 
@@ -20,6 +20,7 @@ class ModalBuilder extends Component {
 
     const images = product.images.map((imageUrl) => ({
       src: imageUrl,
+      altText: product.description,
     }));
 
     return (
@@ -89,4 +90,4 @@ class ModalBuilder extends Component {
   }
 }
 
-export default ModalBuilder;
+export default ProductModal;

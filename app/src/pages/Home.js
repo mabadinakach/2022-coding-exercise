@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import "../css/home.css";
 import axios from "axios";
-import Modal from "./Modal";
+import ModalProduct from "./Modal";
+import AddProductModal from "./AddProductModal";
 import {
   FormGroup,
   Input,
@@ -18,8 +19,6 @@ import {
   Spinner,
 } from "reactstrap";
 
-
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +31,7 @@ class Home extends Component {
       selectedProduct: null,
       error: false,
       errorCode: "",
+      addModal: false,
     };
   }
 
@@ -40,12 +40,18 @@ class Home extends Component {
     this.getCategories();
   }
 
-  toggleModal = (product) => {
+  toggleModalProduct = (product) => {
     this.setState({
       modal: !this.state.modal,
       selectedProduct: product,
     });
   };
+
+  toggleAddProductModal = () => {
+      this.setState({
+        addModal: !this.state.addModal
+      });
+  }
 
    getProducts = async () => {
     const url = "https://dummyjson.com/products";
@@ -118,6 +124,9 @@ class Home extends Component {
     return (
       <div className="home">
           <Container>
+              <Button style={{margin: 10}} color="success" className="float-end sticky-top" onClick={() => this.toggleAddProductModal()}>
+                  Add Product
+              </Button>
             <FormGroup className="searchBar">
               <Input
                 id="searchBar"
@@ -160,7 +169,7 @@ class Home extends Component {
                     <CardText>
                         {product.description}
                     </CardText>
-                    <Button onClick={() => this.toggleModal(product)}>
+                    <Button onClick={() => this.toggleModalProduct(product)}>
                         Details
                     </Button>
                     </CardBody>
@@ -169,12 +178,17 @@ class Home extends Component {
               ))}
             </Row>
           </Container>
-          <Modal
+          <ModalProduct
             key={this.state.selectedProduct?.id}
             modal={this.state.modal}
-            toggleModal={this.toggleModal}
+            toggleModal={this.toggleModalProduct}
             product={this.state.selectedProduct}
           />
+          <AddProductModal 
+            modal={this.state.addModal}
+            toggleModal={this.toggleAddProductModal}
+          />
+            
       </div>
     );
   }
